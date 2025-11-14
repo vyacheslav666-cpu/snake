@@ -35,12 +35,28 @@ class Snake:
             return False
 
 
-def position_food(snake):
-    border = 2
-    food_x = snake.size * random.randint(border, width // snake.size - border)
-    food_y = snake.size * random.randint(border, height // snake.size - border)
+# ЕДА
 
-    return food_x, food_y
+class Food:
+
+    # консруктор
+    def __init__(self, x=0, y=0, size=20, color=(255, 0, 0), border=2):
+        self.x = x
+        self.y = y
+        self.color = color
+        self.size = size
+        self.border = border
+
+    # случайная позиция
+    def position_food(self, snake):
+    
+        self.x = snake.size * random.randint(self.border, width // snake.size - self.border)
+        self.y = snake.size * random.randint(self.border, height // snake.size - self.border)
+
+
+    # отрисовка
+    def draw(self, screen):
+        pygame.draw.rect(screen, self.color, (self.x, self.y, self.size, self.size))
 
 
 
@@ -62,14 +78,8 @@ snake = Snake(width // 2, height // 2)
 
 # ЕДА
 
-food_x, food_y = position_food(snake) 
-# положение
-
-food_color = (255, 0, 0)
-# цвет
-
-food_size = snake.size
-
+food = Food()
+food.position_food(snake)
 
 clock = pygame.time.Clock()
 # таймер
@@ -98,8 +108,8 @@ while True:
             snake.dx, snake.dy = 1, 0
 
 
-    if snake.check_collision(food_x, food_y) == True:
-        food_x, food_y = position_food(snake) 
+    if snake.check_collision(food.x, food.y) == True:
+        food.position_food(snake)
     # условие столкновения
 
     snake.move()
@@ -107,7 +117,7 @@ while True:
     snake.draw(screen)
     # отрисовываем змейку
 
-    pygame.draw.rect(screen, food_color, (food_x, food_y, food_size, food_size))
+    food.draw(screen)
     # рисуем еду
 
     pygame.display.flip()
