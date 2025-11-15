@@ -15,6 +15,9 @@ class Snake:
         self.color = color
         self.dx = dx
         self.dy = dy
+
+        #сегменты
+        self.segments = [(self.x, self.y)]
     
     # отрисовка
     def draw(self, screen):
@@ -22,8 +25,19 @@ class Snake:
 
     # движение
     def move(self):
-        self.x += self.dx * self.speed
-        self.y += self.dy * self.speed
+
+        new_x = self.x + self.dx * self.speed
+        new_y = self.y + self.dy * self.speed
+        # новые координаты
+
+        self.x, self.y = new_x, new_y
+        # обновили
+
+        self.segments.insert(0, (self.x, self.y))
+        # добавили голову
+
+        self.segments.pop()
+
 
 
     # условие столкновения (в дальнейшем передавать экземпляр food в параметры)
